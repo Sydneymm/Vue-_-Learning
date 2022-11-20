@@ -3,7 +3,7 @@
 		<div class="todo-container">
 			<div class="todo-wrap">
         <MyHeader @addTodo="addTodo"></MyHeader>
-        <MyList :todos="todoList" :toogleCheck="toogleCheck"></MyList>
+        <MyList :todos="todoList" ></MyList>
         <MyFooter :todos="todoList" :totalCheckToggle="totalCheckToggle" @clearThings="clearThings"></MyFooter>
       </div>
     </div>
@@ -14,6 +14,7 @@
 import MyFooter from './components/MyFooter.vue';
 import MyHeader from './components/MyHeader.vue';
 import MyList from './components/MyList.vue';
+import pubsub from 'pubsub-js';
 
 export default {
   name: 'App',
@@ -53,7 +54,17 @@ export default {
 					localStorage.setItem('todoList',JSON.stringify(value))
 				}
 			}
-		},
+	},
+  mounted() {
+    this.$bus.$on('toogleCheck', this.toogleCheck);
+    this.pubsubId = pubsub.subscribe('deleteTodo', (_, id)=> {
+      this.todoList = this.todoList.filter(item => item.id !== id);
+    })
+  },
+  beforeDestroy() {
+    this.$bus.$off('toogleCheck');
+    pubsub.unsubscribe(this.pubsubId);
+  }
 }
 </script>
 

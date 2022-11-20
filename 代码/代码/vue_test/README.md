@@ -234,7 +234,7 @@
 
    2. 提供数据：```this.$bus.$emit('xxxx',数据)```
 
-4. 最好在beforeDestroy钩子中，用$off去解绑<span style="color:red">当前组件所用到的</span>事件。
+4. 在接收数据的组件中最好在beforeDestroy钩子中，用$off去解绑<span style="color:red">当前组件所用到的</span>事件。
 
 ## 消息订阅与发布（pubsub）
 

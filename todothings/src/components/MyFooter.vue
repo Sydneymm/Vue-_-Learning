@@ -22,8 +22,7 @@ export default {
     },
 
     isAllcheck() {
-		// return this.todos.length === this.doneTotal && this.todos !== 0;
-      return this.todos.every(i => i.done);
+		return this.doneTotal === this.todos.length && this.todos.length !== 0;
     }
   },
 

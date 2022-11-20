@@ -1,23 +1,29 @@
 <template>
   <li>
 		<label>
-			<input type="checkbox" @change="handleCheck(todo.id)" :checked="todo.done" :toogleCheck="toogleCheck"/>
+			<input type="checkbox" @change="handleCheck(todo.id)" :checked="todo.done"/>
 			<!-- 如下代码也能实现功能，但是不太推荐，因为有点违反原则，因为修改了props -->
 			<!-- <input type="checkbox" v-model="todo.done"/> -->
 			<span>{{todo.name}}</span>
 		</label>
-		<button class="btn btn-danger" >删除</button>
+		<button class="btn btn-danger" @click="deleteToDo(todo.id)">删除</button>
 	</li>
 </template>
 
 <script>
+import pubsub from 'pubsub-js'
 export default {
   name: 'MyItem',
-  props: ['todo', 'toogleCheck'],
+  props: ['todo',],
   methods: {
     handleCheck(id) {
-      this.toogleCheck(id);
-    }
+       this.$bus.$emit('toogleCheck', id);
+    },
+	deleteToDo(id) {
+		//this.$bus.$emit('deleteTodo', id);
+		pubsub.publish('deleteTodo', id);
+		console.log(pubsub)
+	}
   }
 }
 </script>
