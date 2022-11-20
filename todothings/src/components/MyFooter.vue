@@ -3,11 +3,12 @@
 		<label>
 			<!-- <input type="checkbox" :checked="isAll" @change="checkAll"/> -->
 			<input type="checkbox" :checked="isAllcheck" @change="totalCheckbox(!isAllcheck)" :totalCheckToggle="totalCheckToggle"/>
+			<!-- <input type="checkbox" v-model="isAllCheck" :totalCheckToggle="totalCheckToggle"/> -->
 		</label>
 		<span>
 			<span>已完成{{doneTotal}}</span> / 全部{{todos.length}}
 		</span>
-		<button class="btn btn-danger">清除已完成任务</button>
+		<button class="btn btn-danger" @click="clearThings">清除已完成任务</button>
 	</div>
 </template>
 
@@ -21,6 +22,7 @@ export default {
     },
 
     isAllcheck() {
+		// return this.todos.length === this.doneTotal && this.todos !== 0;
       return this.todos.every(i => i.done);
     }
   },
@@ -28,7 +30,14 @@ export default {
   methods: {
     totalCheckbox(isChecked) {
       this.totalCheckToggle(isChecked);
-    }
+    },
+	/* totalCheckbox(e) {
+      this.totalCheckToggle();
+    } */
+	clearThings() {
+		this.$emit('clearThings')
+	}
+
   }
 }
 </script>

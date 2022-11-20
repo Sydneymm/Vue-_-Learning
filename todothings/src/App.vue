@@ -2,9 +2,9 @@
   <div id="root">
 		<div class="todo-container">
 			<div class="todo-wrap">
-        <MyHeader :addTodo="addTodo"></MyHeader>
+        <MyHeader @addTodo="addTodo"></MyHeader>
         <MyList :todos="todoList" :toogleCheck="toogleCheck"></MyList>
-        <MyFooter :todos="todoList" :totalCheckToggle="totalCheckToggle"></MyFooter>
+        <MyFooter :todos="todoList" :totalCheckToggle="totalCheckToggle" @clearThings="clearThings"></MyFooter>
       </div>
     </div>
   </div>
@@ -14,18 +14,13 @@
 import MyFooter from './components/MyFooter.vue';
 import MyHeader from './components/MyHeader.vue';
 import MyList from './components/MyList.vue';
-import { nanoid } from 'nanoid';
 
 export default {
   name: 'App',
   data() {
     return {
       //由于todos是MyHeader组件和MyFooter组件都在使用，所以放在App中（状态提升）
-      todoList: [
-        {id: nanoid(), name: '看书', done: false},
-        {id: nanoid(), name: '写字', done: false},
-        {id: nanoid(), name: '玩', done: true},
-      ],
+      todoList: JSON.parse(localStorage.getItem('todoList')) || [],
     }
   },
   components: {
@@ -46,8 +41,19 @@ export default {
     },
     totalCheckToggle(isChecked) {
       this.todoList.forEach(i => i.done = isChecked);
+    },
+    clearThings() {
+      this.todoList = this.todoList.filter(todo => !todo.done)
     }
-  }
+  },
+  watch: {
+			todoList:{
+				deep:true,
+				handler(value){
+					localStorage.setItem('todoList',JSON.stringify(value))
+				}
+			}
+		},
 }
 </script>
 
