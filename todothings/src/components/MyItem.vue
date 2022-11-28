@@ -20,9 +20,10 @@ export default {
        this.$bus.$emit('toogleCheck', id);
     },
 	deleteToDo(id) {
-		//this.$bus.$emit('deleteTodo', id);
-		pubsub.publish('deleteTodo', id);
-		console.log(pubsub)
+		if(confirm('确定删除吗？')){
+			//this.$bus.$emit('deleteTodo', id);
+			pubsub.publish('deleteTodo', id);
+		}
 	}
   }
 }

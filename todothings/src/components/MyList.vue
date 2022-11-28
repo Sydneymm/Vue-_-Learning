@@ -1,6 +1,8 @@
 <template>
   <ul class="todo-main">
-    <MyItem v-for="t in todos" :key="t.id" :todo="t" ></MyItem>
+	<transition-group name="todoList">
+		<MyItem v-for="t in todos" :key="t.id" :todo="t" ></MyItem>
+	</transition-group>
   </ul>
 </template>
 
@@ -31,5 +33,15 @@ export default {
 		border-radius: 2px;
 		padding-left: 5px;
 		margin-top: 10px;
+	}
+
+	.todoList-enter-active,
+	.todoList-leave-active {
+	transition: all 0.5s ease;
+	}
+	.todoList-enter-from,
+	.todoList-leave-to {
+	opacity: 0;
+	transform: translateX(30px);
 	}
 </style>

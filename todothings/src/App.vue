@@ -5,6 +5,9 @@
         <MyHeader @addTodo="addTodo"></MyHeader>
         <MyList :todos="todoList" ></MyList>
         <MyFooter :todos="todoList" :totalCheckToggle="totalCheckToggle" @clearThings="clearThings"></MyFooter>
+        
+        <!-- 发起axios请求数据 -->
+        <button @click="getData">点击获取数据</button>
       </div>
     </div>
   </div>
@@ -15,6 +18,8 @@ import MyFooter from './components/MyFooter.vue';
 import MyHeader from './components/MyHeader.vue';
 import MyList from './components/MyList.vue';
 import pubsub from 'pubsub-js';
+
+import axios from 'axios';
 
 export default {
   name: 'App',
@@ -45,6 +50,16 @@ export default {
     },
     clearThings() {
       this.todoList = this.todoList.filter(todo => !todo.done)
+    },
+    getData() {
+      axios.get('http://192.168.0.233:8090/locate/')
+      .then((res) => {
+          console.log('请求成功！',res.data.data);
+        }
+      )
+      .catch((err) => {
+        console.log('请求失败！',err);
+      })
     }
   },
   watch: {
